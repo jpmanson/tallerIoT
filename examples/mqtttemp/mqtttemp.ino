@@ -12,8 +12,8 @@
 Adafruit_CC3000 WiDo = Adafruit_CC3000(WiDo_CS, WiDo_IRQ, WiDo_VBAT,
                                          SPI_CLOCK_DIVIDER); // you can change this clock speed
                                          
-#define WLAN_SSID       "LabPTR"           // cannot be longer than 32 characters!
-#define WLAN_PASS       "PoloTecn0"
+#define WLAN_SSID       "wifi-network-name"           // cannot be longer than 32 characters!
+#define WLAN_PASS       "password"
 
 #define DHTPIN 2     // what pin we're connected to
 
@@ -31,7 +31,6 @@ DHT dht(DHTPIN, DHTTYPE);
 
 boolean mqttOK;
 unsigned long lastTime;
-String varTemp = "temp0";
 
 // We're going to set our broker IP and union it to something we can use
 union ArrayToIp {
@@ -122,12 +121,17 @@ void loop(){
       
     } else {
       
-      Serial.println("Enviando datos...");
+      Serial.println("Sending data...");
       
-      char charVal[10];               //temporarily holds data from vals 
-      String stringVal = "";     //data on buff is copied to this string
-      dtostrf(f, 4, 4, charVal);  //4 is mininum width, 4 is precision; float value is copied onto buff
-      mqttclient.publish(varTemp, charVal);
+      char charVal[10];               //temporarily holds data from vals
+	  
+	  //temperature
+      dtostrf(t, 4, 4, charVal);  //4 is mininum width, 4 is precision; float value is copied onto buff
+      mqttclient.publish("temperature", charVal);
+	  
+	  //humidity
+      dtostrf(h, 4, 4, charVal);  //4 is mininum width, 4 is precision; float value is copied onto buff
+      mqttclient.publish("humidity", charVal);
       
     }
     

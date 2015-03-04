@@ -28,7 +28,7 @@
 		onSuccess: function () {
 			// alert("Connected");
 			// Connection succeeded; subscribe to our topic
-			client.subscribe('temp', {qos: 0});
+			client.subscribe('temp5', {qos: 0});
 			tempGauge.setLedColor(steelseries.LedColor.GREEN_LED); //change status LED to GREEN on broker connection
 
 		},
